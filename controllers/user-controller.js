@@ -18,74 +18,18 @@ userController.prototype.post = async (req, res) => {
 
     _validationContract.isRequired(req.body.email, 'O campo e-mail é obrigatório.');
     _validationContract.isEmail(req.body.email, 'O email informado é inválido.');
-    _validationContract.isRequired(req.body.nome, 'O campo nome é obrigatório.');
-    _validationContract.isRequired(req.body.senha, 'O campo senha é obrigatório.');
-    _validationContract.isRequired(req.body.tipo, 'O tipo de usuário não foi informado.');
-    _validationContract.isRequired(req.body.senhaConfirmacao, 'O campo confirmação de senha é obrigatório.');
-    _validationContract.isTrue(req.body.senha != req.body.senhaConfirmacao, 'A senha e a confirmação não são iguais.');
-    
-    if(req.body.tipo){
-        if(req.body.tipo == "Doador"){
-            _validationContract.isRequired(req.body.cidade, 'O campo cidade é obrigatório.');
-            _validationContract.isRequired(req.body.estado, 'O campo estado é obrigatório.');
-            _validationContract.isRequired(req.body.sexo, 'O campo sexo é obrigatório.');
-        } else if(req.body.tipo == "Local"){
-            _validationContract.isRequired(req.body.cidade, 'O campo cidade é obrigatório.');
-            _validationContract.isRequired(req.body.estado, 'O campo estado é obrigatório.');
-            _validationContract.isRequired(req.body.rua, 'O campo rua é obrigatório.');
-        } else if(req.body.tipo == "Funcionário"){}
-    }
+    _validationContract.isRequired(req.body.username, 'O campo nome é obrigatório.');
+    _validationContract.isRequired(req.body.password, 'O campo senha é obrigatório.');
     
     let usuarioExiste = await _rep.emailExiste(req.body.email);
     if (usuarioExiste){
-        _validationContract.isTrue(usuarioExiste.nome != undefined, `Já existe o email ${req.body.email} cadastrado em nossa base`)
+        _validationContract.isTrue(usuarioExiste.username != undefined, `Já existe o email ${req.body.email} cadastrado em nossa base`)
     }
 
-    req.body.senha = md5(req.body.senha);
+    //req.body.password = md5(req.body.password);
     
     await controllerBase.post(_rep, _validationContract, req, res);
 
-    let User = await _rep.emailExiste(req.body.email);
-    
-    if (!usuarioExiste){
-        if(User){
-            if(req.body.tipo){
-                if(req.body.tipo == "Doador"){
-                    await axios.post(variables.Api.serv + variables.Api.port + '/api/doador/register', {
-                        user: User._id,
-                        cidade: req.body.cidade,
-                        estado: req.body.estado,
-                        sexo: req.body.sexo
-                    })
-                    .then((res) => {
-                        console.log("Doador criado a partir de usuário.")
-                    })
-                    .catch((error) => {
-                        console.error(error)
-                    })
-                } else if(req.body.tipo == "Local"){
-                    console.log("É um local")
-                    await axios.post(variables.Api.serv + variables.Api.port + '/api/local/register', {
-                        user: User._id,
-                        nome: req.body.nome,
-                        cidade: req.body.cidade,
-                        estado: req.body.estado,
-                        rua: req.body.rua,
-                        num: req.body.num,
-                        complemento: req.body.complemento
-                    })
-                    .then((res) => {
-                        console.log("Local criado a partir de usuário.")
-                    })
-                    .catch((error) => {
-                        console.error(error)
-                    })
-                } else if(req.body.tipo == "Funcionário"){
-                    console.log("É um funcionário")
-                }
-            }
-        }
-    }
 };
 
 userController.prototype.put = async (req, res) => {

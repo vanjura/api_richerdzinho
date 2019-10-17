@@ -5,7 +5,7 @@ const base = require('../bin/base/repository-base');
 class userRepository {
     constructor() {
         this._base = new base('User');
-        this._projection = '_id username email'
+        this._projection = '_id nome email tipo'
     }
 
     async emailExiste(Email){
@@ -18,15 +18,15 @@ class userRepository {
     }
 
     async create(data){
-        let userCriado = await this._base.create(data);
-        return this._base._model.findById(userCriado._id, this._projection)
+        let doadorCriado = await this._base.create(data);
+        return this._base._model.findById(doadorCriado._id, this._projection)
     }
 
     async update(id, data){
-        let userAtualizado = await this._base.update(id, {
-            username: data.username
+        let doadorAtualizado = await this._base.update(id, {
+            nome: data.nome
         });
-        return this._base._model.findById(userAtualizado._id, this._projection)
+        return this._base._model.findById(doadorAtualizado._id, this._projection)
     }
 
     async getAll(){
