@@ -23,13 +23,14 @@ app.use(bodyParser.urlencoded( { extended:false } ))
 mongoose.connect(variables.Database.connection, { useNewUrlParser: true, useCreateIndex :  true })
 
 //Routes config
-app.use('/api/alerta', alertaRouter);
-app.use('/api/doacao', doacaoRouter);
-app.use('/api/doador', doadorRouter);
-app.use('/api/funcionario', funcionarioRouter);
-app.use('/api/local', localRouter);
 app.use('/user', userRouter);
-app.use('/event', eventRouter);
+// app.use('/event', eventRouter);
+
+// app.use('/api/alerta', alertaRouter);
+// app.use('/api/doacao', doacaoRouter);
+// app.use('/api/doador', doadorRouter);
+// app.use('/api/funcionario', funcionarioRouter);
+// app.use('/api/local', localRouter);
 
 //Export app
 module.exports = app;

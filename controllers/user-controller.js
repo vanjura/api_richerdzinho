@@ -35,17 +35,17 @@ userController.prototype.post = async (req, res) => {
 userController.prototype.put = async (req, res) => {
     let _validationContract = new validation();
 
-    _validationContract.isRequired(req.params.id, 'O ID de edição é obrigatório.');
+    _validationContract.isRequired(req.body.id, 'O ID de edição é obrigatório.');
     _validationContract.isRequired(req.body.email, 'O campo e-mail é obrigatório.');
     _validationContract.isEmail(req.body.email, 'O email informado é inválido.');
-    _validationContract.isRequired(req.body.nome, 'O campo nome é obrigatório.');
-    _validationContract.isRequired(req.body.tipo, 'O tipo de usuário que está tentando criar é inválido.');
+    _validationContract.isRequired(req.body.username, 'O campo username é obrigatório.');
+    _validationContract.isRequired(req.body.password, 'O campo password é obrigatório.');
 
     let usuarioExiste = await _rep.emailExiste(req.body.email);
     if (usuarioExiste){
         _validationContract.isTrue(
-            usuarioExiste.nome != undefined && 
-            usuarioExiste._id != req.params.id, 
+            usuarioExiste.username != undefined && 
+            usuarioExiste.id != req.body.id, 
             `Já existe o email ${req.body.email} cadastrado em nossa base`)
     }
 
