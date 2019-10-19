@@ -1,12 +1,12 @@
-exports.post = async(repository, validationContract, req, res) => {
+exports.post = async (repository, validationContract, req, res) => {
     try {
 
         let data = req.body;
 
-        if(!validationContract.isValid()){
+        if (!validationContract.isValid()) {
             res.status(405).send({
-                message: 'Existem dados inválidos na sua requisição.', 
-                validation: validationContract.errors() 
+                message: 'Existem dados inválidos na sua requisição.',
+                validation: validationContract.errors()
             }).end();
             return;
         }
@@ -17,35 +17,35 @@ exports.post = async(repository, validationContract, req, res) => {
     } catch (err) {
 
         console.log('Post error: ', err);
-        res.status(500).send({ message: 'Erro no processamento', error: err});
+        res.status(500).send({ message: 'Erro no processamento', error: err });
 
     }
 };
 
-exports.put = async(repository, validationContract, req, res) => {
+exports.put = async (repository, validationContract, req, res) => {
     try {
 
         let data = req.body;
         let oldData = await repository.getById(req.body.id);
 
-        if(!oldData){
+        if (!oldData) {
             res.status(404).send({
                 message: 'User não encontrado.'
             }).end();
             return;
         }
 
-        if(!data.sex){
+        if (!data.sex) {
             data.sex = oldData.sex;
         }
-        if(!data.birthdate){
+        if (!data.birthdate) {
             data.birthdate = oldData.birthdate;
         }
 
-        if(!validationContract.isValid()){
+        if (!validationContract.isValid()) {
             res.status(405).send({
-                message: 'Existem dados inválidos na sua requisição.', 
-                validation: validationContract.errors() 
+                message: 'Existem dados inválidos na sua requisição.',
+                validation: validationContract.errors()
             }).end();
             return;
         }
@@ -56,47 +56,51 @@ exports.put = async(repository, validationContract, req, res) => {
     } catch (err) {
 
         console.log('Put error: ', err);
-        res.status(500).send({ message: 'Erro no processamento', error: err});
-        
+        res.status(500).send({ message: 'Erro no processamento', error: err });
+
     }
 };
 
-exports.get = async(repository, req, res) => {
+exports.get = async (repository, req, res) => {
     try {
         let data = await repository.getAll()
         res.status(200).send(data);
     } catch (err) {
         console.log('Get error: ', err);
-        res.status(500).send({ message: 'Erro no processamento', error: err});
+        res.status(500).send({ message: 'Erro no processamento', error: err });
     }
 };
 
-exports.getById = async(repository, req, res) => {
+exports.getById = async (repository, req, res) => {
     try {
         let id = req.params.id
-        if(id){
+        if (id) {
             let data = await repository.getById(id)
-            res.status(200).send(data);
+            if (data) {
+                res.status(200).send(data);
+            } else {
+                res.status(204).send(data);
+            }
         } else {
-            res.status(400).send({message: 'O parâmetro id precisa ser informado.'});
+            res.status(400).send({ message: 'O parâmetro id precisa ser informado.' });
         }
     } catch (err) {
         console.log('Get error: ', err);
-        res.status(500).send({ message: 'Erro no processamento', error: err});
+        res.status(500).send({ message: 'Erro no processamento', error: err });
     }
 };
 
-exports.delete = async(repository, req, res) => {
+exports.delete = async (repository, req, res) => {
     try {
         let id = req.params.id
-        if(id){
+        if (id) {
             let data = await repository.delete(id);
-            res.status(200).send({message: 'Registro excluído com sucesso.'});
-        } else{
-            res.status(400).send({message: 'O parâmetro id precisa ser informado.'});
+            res.status(200).send({ message: 'Registro excluído com sucesso.' });
+        } else {
+            res.status(400).send({ message: 'O parâmetro id precisa ser informado.' });
         }
     } catch (err) {
         console.log('Delete error: ', err);
-        res.status(500).send({ message: 'Erro no processamento', error: err});
+        res.status(500).send({ message: 'Erro no processamento', error: err });
     }
 };
