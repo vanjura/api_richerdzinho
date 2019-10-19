@@ -14,7 +14,7 @@ class userRepository {
 
     async authenticate(Email, Senha) {
         let _hashSenha = md5(Senha);
-        return await this._base._model.findOne({ email: Email, senha: _hashSenha }, this._projection);
+        return await this._base._model.findOne({ email: Email, password: _hashSenha }, this._projection);
     }
 
     async create(data) {
@@ -43,7 +43,8 @@ class userRepository {
     }
 
     async delete(id) {
-        return await this._base.delete(id);
+        var data = await this._base._model.findOne({ id: id }, this._projection);
+        return await this._base.delete(data._id);
     }
 }
 
