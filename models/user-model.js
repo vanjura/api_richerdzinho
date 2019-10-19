@@ -1,6 +1,7 @@
 'use strict'
 
 const mongoose = require('mongoose');
+const AutoIncrement = require('mongoose-sequence')(mongoose);
 const schema = mongoose.Schema;
 
 const userModel = new schema({
@@ -10,5 +11,7 @@ const userModel = new schema({
     birthdate: { default: Date.now, type: Date },
     sex: {type: String},
 }, { versionKey: false });
+
+userModel.plugin(AutoIncrement, {inc_field: 'id'});
 
 module.exports = mongoose.model('User', userModel)
