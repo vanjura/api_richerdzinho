@@ -87,7 +87,7 @@ userController.prototype.autenticar = async (req, res) => {
     if(usuarioEncontrado){
         res.status(200).send(jwt.sign({ user:usuarioEncontrado }, variables.Security.secretKey))
     }else{
-        res.status(404).send({message: 'Usuário e senha informados inválidos.' })
+        res.status(400).send({message: 'Usuário e senha informados inválidos.' })
     }
 }
 

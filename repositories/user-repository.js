@@ -5,7 +5,7 @@ const base = require('../bin/base/repository-base');
 class userRepository {
     constructor() {
         this._base = new base('User');
-        this._projection = '_id id username email sex birthdate'
+        this._projection = 'id username email sex birthdate password'
     }
 
     async emailExiste(Email) {

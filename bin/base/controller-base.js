@@ -101,6 +101,6 @@ exports.delete = async (repository, req, res) => {
         }
     } catch (err) {
         console.log('Delete error: ', err);
-        res.status(500).send({ message: 'Erro no processamento', error: err });
+        res.status(404).send({ message: 'Erro no processamento', error: err });
     }
 };
