@@ -1,7 +1,7 @@
 {
-  "name": "doacao_de_sangue_api",
+  "name": "api_richarlison",
   "version": "1.0.0",
-  "description": "API feita em nodeJS para utilização do app Doacao de Sangue",
+  "description": "API feita em nodeJS para utilização do Richardinho s2",
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -9,7 +9,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/vanjura/doacao_de_sangue_api.git"
+    "url": "git+https://github.com/vanjura/api_richerdzinho"
   },
   "keywords": [
     "api",
@@ -17,12 +17,12 @@
     "de",
     "sangue"
   ],
-  "author": "Lucas Vanjura",
+  "author": "Lucas Vanjura, Thiago Henrique e Jhonatan Konopp",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/vanjura/doacao_de_sangue_api/issues"
+    "url": "https://github.com/vanjura/api_richerdzinho/issues"
   },
-  "homepage": "https://github.com/vanjura/doacao_de_sangue_api#readme",
+  "homepage": "https://github.com/github.com/vanjura/api_richerdzinho#readme",
   "dependencies": {
     "axios": "^0.18.0",
     "body-parser": "^1.18.3",
