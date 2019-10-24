@@ -4,11 +4,6 @@ const mongoose = require('mongoose');
 const variables = require('../bin/config/variables')
 
 //Routes
-const alertaRouter = require('../routes/alerta-router')
-const doacaoRouter = require('../routes/doacao-router')
-const doadorRouter = require('../routes/doador-router')
-const funcionarioRouter = require('../routes/funcionario-router')
-const localRouter = require('../routes/local-router')
 const userRouter = require('../routes/user-router')
 const eventRouter = require('../routes/event-router')
 

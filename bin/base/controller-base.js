@@ -38,10 +38,11 @@ exports.put = async (repository, validationContract, req, res) => {
         if (!data.sex) {
             data.sex = oldData.sex;
         }
+
         if (!data.birthdate) {
             data.birthdate = oldData.birthdate;
         }
-
+        
         if (!validationContract.isValid()) {
             res.status(405).send({
                 message: 'Existem dados inválidos na sua requisição.',
@@ -49,7 +50,7 @@ exports.put = async (repository, validationContract, req, res) => {
             }).end();
             return;
         }
-
+        
         let resultado = await repository.update(oldData._id, data);
         res.status(200).send(resultado);
 

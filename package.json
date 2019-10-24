@@ -11,12 +11,7 @@
     "type": "git",
     "url": "git+https://github.com/vanjura/api_richerdzinho"
   },
-  "keywords": [
-    "api",
-    "doacao",
-    "de",
-    "sangue"
-  ],
+  "keywords": [],
   "author": "Lucas Vanjura, Thiago Henrique e Jhonatan Konopp",
   "license": "ISC",
   "bugs": {
