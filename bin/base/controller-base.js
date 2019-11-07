@@ -4,7 +4,7 @@ exports.post = async (repository, validationContract, req, res) => {
         let data = req.body;
 
         if (!validationContract.isValid()) {
-            res.status(405).send({
+            res.status(400).send({
                 message: 'Existem dados inválidos na sua requisição.',
                 validation: validationContract.errors()
             }).end();
@@ -12,12 +12,12 @@ exports.post = async (repository, validationContract, req, res) => {
         }
 
         let resultado = await repository.create(data);
-        res.status(201).send(resultado);
+        res.status(200).send(resultado);
 
     } catch (err) {
 
         console.log('Post error: ', err);
-        res.status(500).send({ message: 'Erro no processamento', error: err });
+        res.status(400).send({ message: 'Erro no processamento', error: err });
 
     }
 };

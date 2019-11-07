@@ -5,8 +5,8 @@ const repository = require('../repositories/event-repository');
 const validation = require('../bin/helpers/validation');
 const controllerBase = require('../bin/base/controller-base');
 const _rep = new repository();
-const md5 = require('md5');
-const jwt = require('jsonwebtoken');
+//const md5 = require('md5');
+//const jwt = require('jsonwebtoken');
 const variables = require('../bin/config/variables');
 
 function eventController() {
@@ -15,14 +15,14 @@ function eventController() {
 
 eventController.prototype.post = async (req, res) => {
     let _validationContract = new validation();
-
     _validationContract.isRequired(req.body.title, 'O campo título é obrigatório');
     _validationContract.isRequired(req.body.startDate, 'O campo Data de Início é obrigatório');
     _validationContract.isRequired(req.body.endDate, 'O campo Data de Fim é obrigatório');
     _validationContract.isRequired(req.body.street, 'O campo Rua é obrigatório');
     _validationContract.isRequired(req.body.neighborhood, 'O campo Bairro é obrigatório');
     _validationContract.isRequired(req.body.city, 'O campo Cidade é obrigatório');
-    _validationContract.isRequired(req.body.eventType, 'O campo Tipo de Evento é obrigatório');
+    _validationContract.isRequired(req.body.eventTypeId, 'O campo Tipo de Evento é obrigatório');
+    // let User = await _rep.emailExiste(req.body.email);
     
     // let usuarioExiste = await _rep.emailExiste(req.body.email);
     // if (usuarioExiste){
@@ -31,9 +31,8 @@ eventController.prototype.post = async (req, res) => {
 
     // req.body.senha = md5(req.body.senha);
     
-    // await controllerBase.post(_rep, _validationContract, req, res);
+    await controllerBase.post(_rep, _validationContract, req, res);
 
-    // let User = await _rep.emailExiste(req.body.email);
     
     // if (!usuarioExiste){
     //     if(User){

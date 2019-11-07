@@ -13,9 +13,9 @@ const eventModel = new schema({
     city: {type: String, required: true},
     referencePoint: {type: String},
     description: {type: String},
-    eventType: {type: Number, required: true},
+    eventTypeId: {type: Number, required: true},
     ownerId: {type: Number} ,
-    status: {type: Boolean}
+    status: {type: Boolean},
 }, { versionKey: false });
 
 eventModel.plugin(AutoIncrement, { inc_field: 'id_event' });

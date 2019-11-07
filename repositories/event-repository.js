@@ -4,7 +4,7 @@ const base = require('../bin/base/repository-base');
 class eventRepository {
     constructor() {
         this._base = new base('Event');
-        this._projection = '_id title startDate endDate street neighborhood city referencePoint description eventType ownerId status'
+        this._projection = '_id id_event title startDate endDate street neighborhood city referencePoint description eventType ownerId status'
     }
 
     async emailExiste(Email) {
