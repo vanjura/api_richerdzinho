@@ -74,8 +74,8 @@ userController.prototype.delete = async (req, res) => {
 userController.prototype.autenticar = async (req, res) => {
     let _validationContract = new validation();
 
-    _validationContract.isRequired(req.body.login, 'O campo e-mail é obrigatório.');
-    _validationContract.isEmail(req.body.login, 'O email deve ser válido.');
+    _validationContract.isRequired(req.body.email, 'O campo e-mail é obrigatório.');
+    _validationContract.isEmail(req.body.email, 'O email deve ser válido.');
     _validationContract.isRequired(req.body.password, 'O campo password é obrigatório.');
 
     if(!_validationContract.isValid()){
@@ -83,9 +83,12 @@ userController.prototype.autenticar = async (req, res) => {
         return
     }
 
-    let usuarioEncontrado = await _rep.authenticate(req.body.login, req.body.password);
+    let usuarioEncontrado = await _rep.authenticate(req.body.email, req.body.password);
     if(usuarioEncontrado){
-        res.status(200).send(jwt.sign({ user:usuarioEncontrado }, variables.Security.secretKey))
+        res.status(200).send({
+            user: usuarioEncontrado,
+            token: jwt.sign({ user:usuarioEncontrado }, variables.Security.secretKey)
+        })
     }else{
         res.status(400).send({message: 'Usuário e senha informados inválidos.' })
     }

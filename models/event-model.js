@@ -1,14 +1,23 @@
 'use strict'
 
 const mongoose = require('mongoose');
+const AutoIncrement = require('mongoose-sequence')(mongoose);
 const schema = mongoose.Schema;
 
 const eventModel = new schema({
-    email: { trim: true, index: true, unique: true, required: true, type: String },
-    username: {required: true, type: String},
-    password : { required: true, type: String },
-    birthdate: { default: Date.now, type: Date },
-    sex: {type: String},
+    title: {type: String, required: true} ,
+    startDate: {type: Date, required: true},
+    endDate: {type: Date, required: true},
+    street: {type: String, required: true},
+    neighborhood: {type: String, required: true},
+    city: {type: String, required: true},
+    referencePoint: {type: String},
+    description: {type: String},
+    eventType: {type: Number, required: true},
+    ownerId: {type: Number} ,
+    status: {type: Boolean}
 }, { versionKey: false });
+
+eventModel.plugin(AutoIncrement, { inc_field: 'id_event' });
 
 module.exports = mongoose.model('Event', eventModel)

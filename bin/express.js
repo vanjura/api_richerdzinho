@@ -19,7 +19,7 @@ mongoose.connect(variables.Database.connection, { useNewUrlParser: true, useCrea
 
 //Routes config
 app.use('/user', userRouter);
-// app.use('/event', eventRouter);
+app.use('/event', eventRouter);
 
 // app.use('/api/alerta', alertaRouter);
 // app.use('/api/doacao', doacaoRouter);

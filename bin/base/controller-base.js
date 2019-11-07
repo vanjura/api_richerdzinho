@@ -80,14 +80,14 @@ exports.getById = async (repository, req, res) => {
             if (data) {
                 res.status(200).send(data);
             } else {
-                res.status(204).send(data);
+                res.status(404).send({ message: 'Não há dados.' });
             }
         } else {
-            res.status(400).send({ message: 'O parâmetro id precisa ser informado.' });
+            res.status(404).send({ message: 'Usuário não encontrado.' });
         }
     } catch (err) {
         console.log('Get error: ', err);
-        res.status(500).send({ message: 'Erro no processamento', error: err });
+        res.status(400).send({ message: 'Erro no processamento', error: err });
     }
 };
 
