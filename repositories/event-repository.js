@@ -4,7 +4,9 @@ const base = require('../bin/base/repository-base');
 class eventRepository {
     constructor() {
         this._base = new base('Event');
-        this._projection = '_id id_event title startDate endDate street neighborhood city referencePoint description eventType ownerId status'
+        this._projection = {
+            "id": "$id_event"
+        };
     }
 
     async emailExiste(Email) {
@@ -18,7 +20,10 @@ class eventRepository {
 
     async create(data) {
         let doadorCriado = await this._base.create(data);
-        return this._base._model.findById(doadorCriado._id, this._projection)
+        var criteria = {
+            _id: doadorCriado._id
+        }
+        return this._base._model.aggregate([{ $match: criteria }, { $project: this._projection }])
     }
 
     async update(id, data) {
