@@ -12,7 +12,7 @@ exports.post = async (repository, validationContract, req, res) => {
         }
 
         let resultado = await repository.create(data);
-        res.status(200).send(resultado);
+        res.status(200).send(resultado[0]);
 
     } catch (err) {
 

@@ -23,7 +23,9 @@ class eventRepository {
         var criteria = {
             _id: doadorCriado._id
         }
-        return this._base._model.aggregate([{ $match: criteria }, { $project: this._projection }])
+        var query = this._base._model.aggregate([{ $match: criteria }, { $project: this._projection }]);
+        console.log(query)
+        return query;
     }
 
     async update(id, data) {
