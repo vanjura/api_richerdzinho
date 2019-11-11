@@ -5,6 +5,7 @@ const AutoIncrement = require('mongoose-sequence')(mongoose);
 const schema = mongoose.Schema;
 
 const eventModel = new schema({
+    participant: { type: Array },
     title: { type: String, required: true },
     startDate: { type: Date, required: true },
     endDate: { type: Date, required: true },
@@ -20,9 +21,5 @@ const eventModel = new schema({
 
 
 eventModel.plugin(AutoIncrement, { inc_field: 'id_event' });
-
-eventModel.virtual('id').get(function () {
-    return this.id_event;
-})
 
 module.exports = mongoose.model('Event', eventModel)

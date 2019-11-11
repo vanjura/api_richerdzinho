@@ -1,7 +1,7 @@
 'use strict'
 
 const axios = require('axios');
-const repository = require('../repositories/event-repository');
+const repository = require('../repositories/participant-repository');
 const validation = require('../bin/helpers/validation');
 const controllerBase = require('../bin/base/controller-base');
 const _rep = new repository();
@@ -9,11 +9,11 @@ const _rep = new repository();
 //const jwt = require('jsonwebtoken');
 const variables = require('../bin/config/variables');
 
-function eventController() {
+function participantController() {
 
 }
 
-eventController.prototype.post = async (req, res) => {
+participantController.prototype.post = async (req, res) => {
     let _validationContract = new validation();
     _validationContract.isRequired(req.body.title, 'O campo título é obrigatório');
     _validationContract.isRequired(req.body.startDate, 'O campo Data de Início é obrigatório');
@@ -75,7 +75,7 @@ eventController.prototype.post = async (req, res) => {
     // }
 };
 
-// eventController.prototype.put = async (req, res) => {
+// participantController.prototype.put = async (req, res) => {
 //     let _validationContract = new validation();
 
 //     _validationContract.isRequired(req.params.id, 'O ID de edição é obrigatório.');
@@ -96,19 +96,19 @@ eventController.prototype.post = async (req, res) => {
     
 // };
 
-eventController.prototype.get = async (req, res) => {
+participantController.prototype.get = async (req, res) => {
     controllerBase.get(_rep, req, res);
 };
 
-// eventController.prototype.getById = async (req, res) => {
+// participantController.prototype.getById = async (req, res) => {
 //     controllerBase.getById(_rep, req, res);
 // };
 
-// eventController.prototype.delete = async (req, res) => {
+// participantController.prototype.delete = async (req, res) => {
 //     controllerBase.delete(_rep, req, res);
 // };
 
-// eventController.prototype.autenticar = async (req, res) => {
+// participantController.prototype.autenticar = async (req, res) => {
 //     let _validationContract = new validation();
 
 //     _validationContract.isRequired(req.body.email, 'O campo e-mail é obrigatório.');
@@ -131,4 +131,4 @@ eventController.prototype.get = async (req, res) => {
 //     }
 // }
 
-module.exports = eventController;
+module.exports = participantController;
