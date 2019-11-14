@@ -22,91 +22,44 @@ eventController.prototype.post = async (req, res) => {
     _validationContract.isRequired(req.body.neighborhood, 'O campo Bairro é obrigatório');
     _validationContract.isRequired(req.body.city, 'O campo Cidade é obrigatório');
     _validationContract.isRequired(req.body.eventTypeId, 'O campo Tipo de Evento é obrigatório');
-    // let User = await _rep.emailExiste(req.body.email);
-    
-    // let usuarioExiste = await _rep.emailExiste(req.body.email);
-    // if (usuarioExiste){
-    //     _validationContract.isTrue(usuarioExiste.nome != undefined, `Já existe o email ${req.body.email} cadastrado em nossa base`)
-    // }
-
-    // req.body.senha = md5(req.body.senha);
     
     await controllerBase.post(_rep, _validationContract, req, res);
-
-    
-    // if (!usuarioExiste){
-    //     if(User){
-    //         if(req.body.tipo){
-    //             if(req.body.tipo == "Doador"){
-    //                 await axios.post(variables.Api.serv + variables.Api.port + '/api/doador/register', {
-    //                     user: User._id,
-    //                     cidade: req.body.cidade,
-    //                     estado: req.body.estado,
-    //                     sexo: req.body.sexo
-    //                 })
-    //                 .then((res) => {
-    //                     console.log("Doador criado a partir de usuário.")
-    //                 })
-    //                 .catch((error) => {
-    //                     console.error(error)
-    //                 })
-    //             } else if(req.body.tipo == "Local"){
-    //                 console.log("É um local")
-    //                 await axios.post(variables.Api.serv + variables.Api.port + '/api/local/register', {
-    //                     user: User._id,
-    //                     nome: req.body.nome,
-    //                     cidade: req.body.cidade,
-    //                     estado: req.body.estado,
-    //                     rua: req.body.rua,
-    //                     num: req.body.num,
-    //                     complemento: req.body.complemento
-    //                 })
-    //                 .then((res) => {
-    //                     console.log("Local criado a partir de usuário.")
-    //                 })
-    //                 .catch((error) => {
-    //                     console.error(error)
-    //                 })
-    //             } else if(req.body.tipo == "Funcionário"){
-    //                 console.log("É um funcionário")
-    //             }
-    //         }
-    //     }
-    // }
 };
 
-// eventController.prototype.put = async (req, res) => {
-//     let _validationContract = new validation();
+eventController.prototype.put = async (req, res) => {
+    let _validationContract = new validation();
 
-//     _validationContract.isRequired(req.params.id, 'O ID de edição é obrigatório.');
-//     _validationContract.isRequired(req.body.email, 'O campo e-mail é obrigatório.');
-//     _validationContract.isEmail(req.body.email, 'O email informado é inválido.');
-//     _validationContract.isRequired(req.body.nome, 'O campo nome é obrigatório.');
-//     _validationContract.isRequired(req.body.tipo, 'O tipo de usuário que está tentando criar é inválido.');
+    _validationContract.isRequired(req.body.title, 'O campo título é obrigatório');
+    _validationContract.isRequired(req.body.startDate, 'O campo Data de Início é obrigatório');
+    _validationContract.isRequired(req.body.endDate, 'O campo Data de Fim é obrigatório');
+    _validationContract.isRequired(req.body.street, 'O campo Rua é obrigatório');
+    _validationContract.isRequired(req.body.neighborhood, 'O campo Bairro é obrigatório');
+    _validationContract.isRequired(req.body.city, 'O campo Cidade é obrigatório');
+    _validationContract.isRequired(req.body.eventTypeId, 'O campo Tipo de Evento é obrigatório');
 
-//     let usuarioExiste = await _rep.emailExiste(req.body.email);
-//     if (usuarioExiste){
-//         _validationContract.isTrue(
-//             usuarioExiste.nome != undefined && 
-//             usuarioExiste._id != req.params.id, 
-//             `Já existe o email ${req.body.email} cadastrado em nossa base`)
-//     }
+    // let usuarioExiste = await _rep.emailExiste(req.body.email);
+    // if (usuarioExiste){
+    //     _validationContract.isTrue(
+    //         usuarioExiste.nome != undefined && 
+    //         usuarioExiste._id != req.params.id, 
+    //         `Já existe o email ${req.body.email} cadastrado em nossa base`)
+    // }
 
-//     controllerBase.put(_rep, _validationContract, req, res);
+    controllerBase.put(_rep, _validationContract, req, res);
     
-// };
+};
 
 eventController.prototype.get = async (req, res) => {
     controllerBase.get(_rep, req, res);
 };
 
-// eventController.prototype.getById = async (req, res) => {
-//     controllerBase.getById(_rep, req, res);
-// };
+eventController.prototype.getById = async (req, res) => {
+    controllerBase.getById(_rep, req, res);
+};
 
-// eventController.prototype.delete = async (req, res) => {
-//     controllerBase.delete(_rep, req, res);
-// };
+eventController.prototype.delete = async (req, res) => {
+    controllerBase.delete(_rep, req, res);
+};
 
 // eventController.prototype.autenticar = async (req, res) => {
 //     let _validationContract = new validation();

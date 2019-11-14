@@ -4,15 +4,12 @@ exports.post = async (repository, validationContract, req, res) => {
         let data = req.body;
 
         if (!validationContract.isValid()) {
-            res.status(400).send({
-                message: 'Existem dados inválidos na sua requisição.',
-                validation: validationContract.errors()
-            }).end();
+            res.status(400).send().end();
             return;
         }
 
         let resultado = await repository.create(data);
-        res.status(200).send(resultado[0]);
+        res.status(200).send();
 
     } catch (err) {
 
@@ -26,23 +23,8 @@ exports.put = async (repository, validationContract, req, res) => {
     try {
 
         let data = req.body;
-        let oldData = await repository.getById(req.body.id);
+        console.log("data",data)
 
-        if (!oldData) {
-            res.status(404).send({
-                message: 'User não encontrado.'
-            }).end();
-            return;
-        }
-
-        if (!data.sex) {
-            data.sex = oldData.sex;
-        }
-
-        if (!data.birthdate) {
-            data.birthdate = oldData.birthdate;
-        }
-        
         if (!validationContract.isValid()) {
             res.status(405).send({
                 message: 'Existem dados inválidos na sua requisição.',
@@ -51,7 +33,7 @@ exports.put = async (repository, validationContract, req, res) => {
             return;
         }
         
-        let resultado = await repository.update(oldData._id, data);
+        let resultado = await repository.update(data.id, data);
         res.status(200).send(resultado);
 
     } catch (err) {

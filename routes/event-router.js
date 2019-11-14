@@ -11,12 +11,13 @@ let _ctrl = new controller();
 // router.get('/', _ctrl.get);
 router.post('/', _ctrl.post);
 router.get('/', _ctrl.get);
+router.put('/', _ctrl.put);
+router.get('/:id', _ctrl.getById);
+router.delete('/:id', _ctrl.delete);
 
 // router.get('/search', _ctrl.get);
 
 // //Privado
 // router.put('/', auth, _ctrl.put);
-// router.get('/:id', auth, _ctrl.getById);
-// router.delete('/:id', auth, _ctrl.delete);
 
 module.exports = router;
