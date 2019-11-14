@@ -53,6 +53,10 @@ eventController.prototype.get = async (req, res) => {
     controllerBase.get(_rep, req, res);
 };
 
+eventController.prototype.search = async (req, res) => {
+    controllerBase.search(_rep, req, res);
+};
+
 eventController.prototype.getById = async (req, res) => {
     controllerBase.getById(_rep, req, res);
 };
@@ -60,28 +64,5 @@ eventController.prototype.getById = async (req, res) => {
 eventController.prototype.delete = async (req, res) => {
     controllerBase.delete(_rep, req, res);
 };
-
-// eventController.prototype.autenticar = async (req, res) => {
-//     let _validationContract = new validation();
-
-//     _validationContract.isRequired(req.body.email, 'O campo e-mail é obrigatório.');
-//     _validationContract.isEmail(req.body.email, 'O email deve ser válido.');
-//     _validationContract.isRequired(req.body.senha, 'O campo senha é obrigatório.');
-
-//     if(!_validationContract.isValid()){
-//         res.status(400).send({message: 'Falha no login.', validation: _validationContract.errors() });
-//         return
-//     }
-
-//     let usuarioEncontrado = await _rep.authenticate(req.body.email, req.body.senha);
-//     if(usuarioEncontrado){
-//         res.status(200).send({
-//             usuario: usuarioEncontrado,
-//             token: jwt.sign({ user:usuarioEncontrado }, variables.Security.secretKey)
-//         }) 
-//     }else{
-//         res.status(404).send({message: 'Usuário e senha informados inválidos.' })
-//     }
-// }
 
 module.exports = eventController;

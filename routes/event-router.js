@@ -12,10 +12,9 @@ let _ctrl = new controller();
 router.post('/', _ctrl.post);
 router.get('/', _ctrl.get);
 router.put('/', _ctrl.put);
+router.get('/search', _ctrl.search);
 router.get('/:id', _ctrl.getById);
 router.delete('/:id', _ctrl.delete);
-
-// router.get('/search', _ctrl.get);
 
 // //Privado
 // router.put('/', auth, _ctrl.put);

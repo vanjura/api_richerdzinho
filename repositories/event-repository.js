@@ -197,6 +197,67 @@ class eventRepository {
         let event = await this._base._model.find({ id_event: id });
         return await this._base.delete(event[0]._id);
     }
+
+    async search(filter){
+        let ret = [];
+        let events = await this._base._model.find({ 
+            startDate: {
+                $gte: new Date(filter.start_date),
+                $lte: new Date(filter.end_date),
+            },
+            eventTypeId: filter.event_type
+        });
+
+        for (const [idx, element] of events.entries()) {
+            let retAux = {}
+            retAux.city = element.city;
+            retAux.id = element.id_event;
+            retAux.title = element.title;
+            retAux.street = element.street;
+            retAux.status = element.status;
+            retAux.endDate = element.endDate;
+            retAux.ownerId = element.ownerId;
+            retAux.startDate = element.startDate;
+            retAux.description = element.description;
+            retAux.neighborhood = element.neighborhood;
+            retAux.referencePoint = element.referencePoint;
+
+            retAux.participant = [];
+
+            for (const [idx, participant] of element.participant.entries()) {
+                let participantRet = await _repUser.getById(participant);
+                let participantObject = {
+                    id: participantRet.id,
+                    username: participantRet.username,
+                    registrationDate: new Date()
+                }
+                retAux.participant.push(participantObject);
+            }
+
+            retAux.eventType = {
+                id: element.eventTypeId,
+                name: "Evento Tipo " + element.eventTypeId
+            };
+
+            let user = await _repUser.getById(element.ownerId)
+            retAux.user = {}
+            if (user) {
+                retAux.user.id = user.id;
+                retAux.user.sex = user.sex;
+                retAux.user.email = user.email;
+                retAux.user.username = user.username;
+                retAux.user.birthdate = user.birthdate;
+            } else {
+                retAux.user.id = element.ownerId;
+                retAux.user.sex = 'Usuário Inexistente';
+                retAux.user.email = 'Usuário Inexistente';
+                retAux.user.username = 'Usuário Inexistente';
+                retAux.user.birthdate = 'Usuário Inexistente';
+            }
+            ret.push(retAux);
+        }
+        return ret;
+    }
 }
 
 module.exports = eventRepository;

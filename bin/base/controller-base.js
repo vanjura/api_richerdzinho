@@ -26,7 +26,7 @@ exports.put = async (repository, validationContract, req, res) => {
         console.log("data",data)
 
         if (!validationContract.isValid()) {
-            res.status(405).send({
+            res.status(400).send({
                 message: 'Existem dados inválidos na sua requisição.',
                 validation: validationContract.errors()
             }).end();
@@ -39,7 +39,7 @@ exports.put = async (repository, validationContract, req, res) => {
     } catch (err) {
 
         console.log('Put error: ', err);
-        res.status(500).send({ message: 'Erro no processamento', error: err });
+        res.status(400).send({ message: 'Erro no processamento', error: err });
 
     }
 };
@@ -50,7 +50,17 @@ exports.get = async (repository, req, res) => {
         res.status(200).send(data);
     } catch (err) {
         console.log('Get error: ', err);
-        res.status(500).send({ message: 'Erro no processamento', error: err });
+        res.status(400).send({ message: 'Erro no processamento', error: err });
+    }
+};
+
+exports.search = async (repository, req, res) => {
+    try {
+        let data = await repository.search(req.query)
+        res.status(200).send(data);
+    } catch (err) {
+        console.log('Get error: ', err);
+        res.status(400).send({ message: 'Erro no processamento', error: err });
     }
 };
 
@@ -62,10 +72,10 @@ exports.getById = async (repository, req, res) => {
             if (data) {
                 res.status(200).send(data);
             } else {
-                res.status(404).send({ message: 'Não há dados.' });
+                res.status(400).send({ message: 'Não há dados.' });
             }
         } else {
-            res.status(404).send({ message: 'Usuário não encontrado.' });
+            res.status(400).send({ message: 'Usuário não encontrado.' });
         }
     } catch (err) {
         console.log('Get error: ', err);
@@ -84,6 +94,6 @@ exports.delete = async (repository, req, res) => {
         }
     } catch (err) {
         console.log('Delete error: ', err);
-        res.status(404).send({ message: 'Erro no processamento', error: err });
+        res.status(400).send({ message: 'Erro no processamento', error: err });
     }
 };
