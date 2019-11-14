@@ -14,6 +14,20 @@ class eventRepository {
         };
     }
 
+    async createParticipant(data) {
+        let event = await this._base._model.find({ id_event: data.eventoId })
+        if (event.length > 0) {
+            let userCadastrado = await this._base._model.find({ id_event: data.eventoId, participant: data.userId })
+            if(userCadastrado.length > 0){
+                return false;
+            }else{
+                return await this._base.push(event[0]._id, { participant: data.userId });
+            }
+        } else {
+            return false;
+        }
+    }
+
     async emailExiste(Email) {
         return await this._base._model.findOne({ email: Email }, this._projection)
     }
@@ -108,12 +122,14 @@ class eventRepository {
 
             for (const [idx, participant] of element.participant.entries()) {
                 let participantRet = await _repUser.getById(participant);
-                let participantObject = {
-                    id: participantRet.id,
-                    username: participantRet.username,
-                    registrationDate: new Date()
+                if(participantRet){
+                    let participantObject = {
+                        id: participantRet.id,
+                        username: participantRet.username,
+                        registrationDate: new Date()
+                    }
+                    retAux.participant.push(participantObject);
                 }
-                retAux.participant.push(participantObject);
             }
 
             retAux.eventType = {
@@ -143,52 +159,56 @@ class eventRepository {
 
     async getById(id) {
         let event = await this._base._model.find({ id_event: id });
-
         let eventRet = {}
-        eventRet.city = event[0].city;
-        eventRet.id = event[0].id_event;
-        eventRet.title = event[0].title;
-        eventRet.street = event[0].street;
-        eventRet.status = event[0].status;
-        eventRet.endDate = event[0].endDate;
-        eventRet.ownerId = event[0].ownerId;
-        eventRet.startDate = event[0].startDate;
-        eventRet.description = event[0].description;
-        eventRet.neighborhood = event[0].neighborhood;
-        eventRet.referencePoint = event[0].referencePoint;
 
-        eventRet.participant = []
+        if (event.length > 0) {
+            eventRet.city = event[0].city;
+            eventRet.id = event[0].id_event;
+            eventRet.title = event[0].title;
+            eventRet.street = event[0].street;
+            eventRet.status = event[0].status;
+            eventRet.endDate = event[0].endDate;
+            eventRet.ownerId = event[0].ownerId;
+            eventRet.startDate = event[0].startDate;
+            eventRet.description = event[0].description;
+            eventRet.neighborhood = event[0].neighborhood;
+            eventRet.referencePoint = event[0].referencePoint;
 
-        for (const [idx, participant] of event[0].participant.entries()) {
-            let participantRet = await _repUser.getById(participant);
-            let participantObject = {
-                id: participantRet.id,
-                username: participantRet.username,
-                registrationDate: new Date()
+            eventRet.participant = []
+
+            for (const [idx, participant] of event[0].participant.entries()) {
+                let participantRet = await _repUser.getById(participant);
+                let participantObject = {
+                    id: participantRet.id,
+                    username: participantRet.username,
+                    registrationDate: new Date()
+                }
+                eventRet.participant.push(participantObject);
             }
-            eventRet.participant.push(participantObject);
-        }
 
-        let user = await _repUser.getById(event[0].ownerId)
-        eventRet.user = {}
-        if (user) {
-            eventRet.user.id = user.id;
-            eventRet.user.sex = user.sex;
-            eventRet.user.email = user.email;
-            eventRet.user.username = user.username;
-            eventRet.user.birthdate = user.birthdate;
+            let user = await _repUser.getById(event[0].ownerId)
+            eventRet.user = {}
+            if (user) {
+                eventRet.user.id = user.id;
+                eventRet.user.sex = user.sex;
+                eventRet.user.email = user.email;
+                eventRet.user.username = user.username;
+                eventRet.user.birthdate = user.birthdate;
+            } else {
+                eventRet.user.id = event[0].ownerId;
+                eventRet.user.sex = 'Usuário Inexistente';
+                eventRet.user.email = 'Usuário Inexistente';
+                eventRet.user.username = 'Usuário Inexistente';
+                eventRet.user.birthdate = 'Usuário Inexistente';
+            }
+
+            eventRet.eventType = {
+                id: event[0].eventTypeId,
+                name: "Evento Tipo " + event[0].eventTypeId
+            };
         } else {
-            eventRet.user.id = event[0].ownerId;
-            eventRet.user.sex = 'Usuário Inexistente';
-            eventRet.user.email = 'Usuário Inexistente';
-            eventRet.user.username = 'Usuário Inexistente';
-            eventRet.user.birthdate = 'Usuário Inexistente';
+            return null;
         }
-
-        eventRet.eventType = {
-            id: event[0].eventTypeId,
-            name: "Evento Tipo " + event[0].eventTypeId
-        };
 
         return eventRet
     }
@@ -198,9 +218,9 @@ class eventRepository {
         return await this._base.delete(event[0]._id);
     }
 
-    async search(filter){
+    async search(filter) {
         let ret = [];
-        let events = await this._base._model.find({ 
+        let events = await this._base._model.find({
             startDate: {
                 $gte: new Date(filter.start_date),
                 $lte: new Date(filter.end_date),

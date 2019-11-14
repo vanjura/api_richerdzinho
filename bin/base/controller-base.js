@@ -9,7 +9,8 @@ exports.post = async (repository, validationContract, req, res) => {
         }
 
         let resultado = await repository.create(data);
-        res.status(200).send();
+        console.log(resultado);
+        res.status(200).send(resultado);
 
     } catch (err) {
 
@@ -34,6 +35,7 @@ exports.put = async (repository, validationContract, req, res) => {
         }
         
         let resultado = await repository.update(data.id, data);
+        console.log(resultado)
         res.status(200).send(resultado);
 
     } catch (err) {

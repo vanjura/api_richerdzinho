@@ -5,6 +5,8 @@ const repository = require('../repositories/event-repository');
 const validation = require('../bin/helpers/validation');
 const controllerBase = require('../bin/base/controller-base');
 const _rep = new repository();
+const repUser = require('../repositories/user-repository');
+const _repUser = new repUser();
 //const md5 = require('md5');
 //const jwt = require('jsonwebtoken');
 const variables = require('../bin/config/variables');
@@ -12,6 +14,25 @@ const variables = require('../bin/config/variables');
 function eventController() {
 
 }
+
+eventController.prototype.postParticipant = async (req, res) => {
+    let _validationContract = new validation();
+    _validationContract.isRequired(req.body.userId, 'O campo userId é obrigatório');
+    _validationContract.isRequired(req.body.eventoId, 'O campo eventoId é obrigatório');
+
+    let user = await _repUser.getById(req.body.userId);
+    if (user) {
+        let ret = await _rep.createParticipant(req.body)
+        if (ret){
+            res.status(200).send().end();
+        }else{
+            res.status(400).send().end();
+        }
+    } else {
+        res.status(400).send().end();
+    }
+
+};
 
 eventController.prototype.post = async (req, res) => {
     let _validationContract = new validation();

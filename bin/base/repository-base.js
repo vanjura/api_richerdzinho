@@ -12,6 +12,11 @@ class RepositoryBase {
         return await modelo.save();
     }
 
+    async push(id, data){
+        await this._model.findByIdAndUpdate(id, { $push: data })
+        return await this._model.findById(id);
+    }
+
     async update(id, data){
         await this._model.findByIdAndUpdate(id, { $set: data })
         return await this._model.findById(id);

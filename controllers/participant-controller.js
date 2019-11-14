@@ -5,9 +5,11 @@ const repository = require('../repositories/participant-repository');
 const validation = require('../bin/helpers/validation');
 const controllerBase = require('../bin/base/controller-base');
 const _rep = new repository();
-//const md5 = require('md5');
-//const jwt = require('jsonwebtoken');
 const variables = require('../bin/config/variables');
+const repUser = require('../repositories/user-repository');
+const _repUser = new repUser();
+const repEvent = require('../repositories/event-repository');
+const _repEvent = new repEvent();
 
 function participantController() {
 
@@ -15,64 +17,21 @@ function participantController() {
 
 participantController.prototype.post = async (req, res) => {
     let _validationContract = new validation();
-    _validationContract.isRequired(req.body.title, 'O campo título é obrigatório');
-    _validationContract.isRequired(req.body.startDate, 'O campo Data de Início é obrigatório');
-    _validationContract.isRequired(req.body.endDate, 'O campo Data de Fim é obrigatório');
-    _validationContract.isRequired(req.body.street, 'O campo Rua é obrigatório');
-    _validationContract.isRequired(req.body.neighborhood, 'O campo Bairro é obrigatório');
-    _validationContract.isRequired(req.body.city, 'O campo Cidade é obrigatório');
-    _validationContract.isRequired(req.body.eventTypeId, 'O campo Tipo de Evento é obrigatório');
-    // let User = await _rep.emailExiste(req.body.email);
-    
-    // let usuarioExiste = await _rep.emailExiste(req.body.email);
-    // if (usuarioExiste){
-    //     _validationContract.isTrue(usuarioExiste.nome != undefined, `Já existe o email ${req.body.email} cadastrado em nossa base`)
-    // }
+    _validationContract.isRequired(req.body.userId, 'O campo userId é obrigatório');
+    _validationContract.isRequired(req.body.eventoId, 'O campo eventoId é obrigatório');
 
-    // req.body.senha = md5(req.body.senha);
-    
-    await controllerBase.post(_rep, _validationContract, req, res);
+    let user = await _repUser.getById(req.body.userId);
+    if (user) {
+        let event = await _repEvent.getById(req.body.eventoId);
+        if (event) {
+            await _rep.create(req.body, _repEvent);
+        } else {
+            res.status(400).send().end();
+        }
+    } else {
+        res.status(400).send().end();
+    }
 
-    
-    // if (!usuarioExiste){
-    //     if(User){
-    //         if(req.body.tipo){
-    //             if(req.body.tipo == "Doador"){
-    //                 await axios.post(variables.Api.serv + variables.Api.port + '/api/doador/register', {
-    //                     user: User._id,
-    //                     cidade: req.body.cidade,
-    //                     estado: req.body.estado,
-    //                     sexo: req.body.sexo
-    //                 })
-    //                 .then((res) => {
-    //                     console.log("Doador criado a partir de usuário.")
-    //                 })
-    //                 .catch((error) => {
-    //                     console.error(error)
-    //                 })
-    //             } else if(req.body.tipo == "Local"){
-    //                 console.log("É um local")
-    //                 await axios.post(variables.Api.serv + variables.Api.port + '/api/local/register', {
-    //                     user: User._id,
-    //                     nome: req.body.nome,
-    //                     cidade: req.body.cidade,
-    //                     estado: req.body.estado,
-    //                     rua: req.body.rua,
-    //                     num: req.body.num,
-    //                     complemento: req.body.complemento
-    //                 })
-    //                 .then((res) => {
-    //                     console.log("Local criado a partir de usuário.")
-    //                 })
-    //                 .catch((error) => {
-    //                     console.error(error)
-    //                 })
-    //             } else if(req.body.tipo == "Funcionário"){
-    //                 console.log("É um funcionário")
-    //             }
-    //         }
-    //     }
-    // }
 };
 
 // participantController.prototype.put = async (req, res) => {
@@ -93,7 +52,7 @@ participantController.prototype.post = async (req, res) => {
 //     }
 
 //     controllerBase.put(_rep, _validationContract, req, res);
-    
+
 // };
 
 participantController.prototype.get = async (req, res) => {

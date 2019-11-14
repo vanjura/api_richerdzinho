@@ -10,12 +10,18 @@ class participantRepository {
         };
     }
 
-    async create(data) {
-        let doadorCriado = await this._base.create(data);
-        var criteria = {
-            _id: doadorCriado._id
-        }
-        return await this._base._model.aggregate([{ $match: criteria }, { $project: this._projectionA }]);
+    async create(data, repEvent) {
+        console.log(repEvent)
+
+        await repEvent._model.update(
+            { id_event: data.eventoId },
+            { $push: { participant: data.userId } }
+        )
+        // let doadorCriado = await this._base.create(data);
+        // var criteria = {
+        //     _id: doadorCriado._id
+        // }
+        // return await this._base._model.aggregate([{ $match: criteria }, { $project: this._projectionA }]);
     }
 
     async update(id, data) {

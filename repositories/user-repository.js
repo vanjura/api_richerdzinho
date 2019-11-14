@@ -19,18 +19,20 @@ class userRepository {
 
     async create(data) {
         let userCriado = await this._base.create(data);
+        console.log(userCriado)
         return this._base._model.findById(userCriado._id, this._projection)
     }
 
-    async update(id, data) {
-        let userAtualizado = await this._base.update(id, {
+    async update(idUser, data) {
+        let userAtualizado = await this._base._model.update({id: idUser}, {
             username: data.username,
             password: data.password,
             birthdate: data.birthdate,
             email: data.email,
             sex: data.sex
         });
-        return this._base._model.findById(userAtualizado._id, this._projection)
+        console.log("idUser",idUser)
+        return this._base._model.findOne({id: idUser})
     }
 
     async getAll() {

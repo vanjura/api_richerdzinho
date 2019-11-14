@@ -6,6 +6,7 @@ const variables = require('../bin/config/variables')
 //Routes
 const userRouter = require('../routes/user-router')
 const eventRouter = require('../routes/event-router')
+const participantRouter = require('../routes/participant-router')
 
 //Express 
 const app = express();
@@ -20,6 +21,7 @@ mongoose.connect(variables.Database.connection, { useNewUrlParser: true, useCrea
 //Routes config
 app.use('/user', userRouter);
 app.use('/event', eventRouter);
+app.use('/participant', participantRouter);
 
 // app.use('/api/alerta', alertaRouter);
 // app.use('/api/doacao', doacaoRouter);
