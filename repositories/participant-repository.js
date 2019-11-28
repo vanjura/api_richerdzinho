@@ -24,13 +24,6 @@ class participantRepository {
         // return await this._base._model.aggregate([{ $match: criteria }, { $project: this._projectionA }]);
     }
 
-    async update(id, data) {
-        let doadorAtualizado = await this._base.update(id, {
-            nome: data.nome
-        });
-        return this._base._model.findById(doadorAtualizado._id, this._projection)
-    }
-
     async getAll() {
         let ret;
         let events = await this._base._model.find({}, this._projection);

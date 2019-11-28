@@ -49,7 +49,16 @@ class eventRepository {
 
         let event = await this._base._model.find({ id_event: id })
         let eventAtualizado = await this._base.update(event[0]._id, {
-            title: data.title
+            title: data.title,
+            city: data.city,
+            startDate: data.startDate,
+            endDate: data.endDate,
+            street: data.street,
+            neighborhood: data.neighborhood,
+            referencePoint: data.referencePoint,
+            description: data.description,
+            eventTypeId: data.eventTypeId,
+            status: data.status
         });
 
         let eventRet = {}
@@ -59,7 +68,6 @@ class eventRepository {
         eventRet.street = eventAtualizado.street;
         eventRet.status = eventAtualizado.status;
         eventRet.endDate = eventAtualizado.endDate;
-        eventRet.ownerId = eventAtualizado.ownerId;
         eventRet.startDate = eventAtualizado.startDate;
         eventRet.description = eventAtualizado.description;
         eventRet.neighborhood = eventAtualizado.neighborhood;
@@ -67,6 +75,7 @@ class eventRepository {
 
         eventRet.participant = []
 
+        /*
         for (const [idx, participant] of eventAtualizado.participant.entries()) {
             let participantRet = await _repUser.getById(participant);
             let participantObject = {
@@ -76,13 +85,14 @@ class eventRepository {
             }
             eventRet.participant.push(participantObject);
         }
+        */
 
-        let user = await _repUser.getById(eventAtualizado.ownerId)
-        eventRet.user = {}
-        if (user) {
-            eventRet.user.id = user.id;
-            eventRet.user.sex = user.sex;
-            eventRet.user.email = user.email;
+         let user = await _repUser.getById(eventAtualizado.ownerId)
+         eventRet.user = {}
+         if (user) {
+             eventRet.user.id = user.id;
+             eventRet.user.sex = user.sex;
+             eventRet.user.email = user.email;
             eventRet.user.username = user.username;
             eventRet.user.birthdate = user.birthdate;
         } else {

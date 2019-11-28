@@ -8,7 +8,7 @@ const userModel = new schema({
     email: { trim: true, index: true, unique: true, required: true, type: String },
     username: { required: true, type: String },
     password: { required: true, type: String },
-    birthdate: { default: "", type: Date },
+    birthdate: { default: "", type: Date},
     sex: { default: "", type: String },
 }, { versionKey: false });
 

@@ -16,9 +16,6 @@ function participantController() {
 }
 
 participantController.prototype.post = async (req, res) => {
-    let _validationContract = new validation();
-    _validationContract.isRequired(req.body.userId, 'O campo userId é obrigatório');
-    _validationContract.isRequired(req.body.eventoId, 'O campo eventoId é obrigatório');
 
     let user = await _repUser.getById(req.body.userId);
     if (user) {

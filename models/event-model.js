@@ -5,7 +5,6 @@ const AutoIncrement = require('mongoose-sequence')(mongoose);
 const schema = mongoose.Schema;
 
 const eventModel = new schema({
-    participant: { type: Array },
     title: { type: String, required: true },
     startDate: { type: Date, required: true },
     endDate: { type: Date, required: true },
