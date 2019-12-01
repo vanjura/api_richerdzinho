@@ -19,7 +19,7 @@ participantController.prototype.get = async (req, res) => {
     let arr = [];
     for (let index = 1; index < 6; index++) {
         arr.push({
-            nome: "Evento Tipo " + index,
+            name: "Evento Tipo " + index,
             id: index
         })
     }
