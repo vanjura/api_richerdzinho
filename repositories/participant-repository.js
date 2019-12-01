@@ -56,7 +56,8 @@ class participantRepository {
     }
 
     async delete(id) {
-        return await this._base.delete(id);
+        let participant = await this._base._model.findOne({ participantId: id });
+        return await this._base.delete(participant._id);
     }
 }
 
