@@ -10,18 +10,9 @@ class participantRepository {
         };
     }
 
-    async create(data, repEvent) {
-        console.log(repEvent)
-
-        await repEvent._model.update(
-            { id_event: data.eventoId },
-            { $push: { participant: data.userId } }
-        )
-        // let doadorCriado = await this._base.create(data);
-        // var criteria = {
-        //     _id: doadorCriado._id
-        // }
-        // return await this._base._model.aggregate([{ $match: criteria }, { $project: this._projectionA }]);
+    async create(data) {
+        data.registrationDate = Date.now();
+        await this._base.create(data);
     }
 
     async getAll() {
@@ -34,7 +25,34 @@ class participantRepository {
     }
 
     async getById(id) {
-        return await this._base._model.findById(id, this._projection);
+        console.log(id)
+
+        // var participant =  await this._base._model.findById(id, this._projection);
+        let participant = await this._base._model.findOne({ participantId: id });
+        let ret = {};
+        ret.id = participant.participantId;
+        ret.userId = participant.userId;
+        ret.eventoId = participant.eventoId;
+        ret.registrationDate = participant.registrationDate;
+
+        return ret;
+    }
+
+    async getByEvent(id) {
+        let participants = await this._base._model.find({ eventoId: id }).sort({registrationDate:1});
+        let ret = [];
+        if(participants){
+            participants.forEach(participant => {
+                let auxRet = {};
+                auxRet.id = participant.participantId;
+                auxRet.userId = participant.userId;
+                auxRet.eventoId = participant.eventoId;
+                auxRet.registrationDate = participant.registrationDate;
+                ret.push(auxRet);
+            });
+        }
+
+        return ret;
     }
 
     async delete(id) {

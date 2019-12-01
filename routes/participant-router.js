@@ -2,14 +2,14 @@
 
 const express = require('express');
 const router = express.Router();
-const controller = require('../controllers/event-controller')
+const controller = require('../controllers/participant-controller')
 const auth = require('../middlewares/authentication')
 
 let _ctrl = new controller();
 
 //Publico
-router.post('/', _ctrl.postParticipant);
-// router.get('/:id', _ctrl.get);
+router.post('/', _ctrl.post);
+router.get('/:id', _ctrl.get);
 // router.delete('/:id', _ctrl.delete);
 // router.get('/', _ctrl.get);
 

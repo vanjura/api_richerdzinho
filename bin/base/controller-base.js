@@ -2,6 +2,7 @@ exports.post = async (repository, validationContract, req, res) => {
     try {
 
         let data = req.body;
+        console.log("POST - Recebido:", data);
 
         if (!validationContract.isValid()) {
             console.log("Detectado erro:", validationContract.errors())
@@ -25,10 +26,10 @@ exports.put = async (repository, validationContract, req, res) => {
     try {
 
         let data = req.body;
-        console.log("data",data)
+        console.log("PUT Request:",data)
 
         if (!validationContract.isValid()) {
-            console.log("Detectado erro:", validationContract.errors())
+            console.log("PUT ERRO - Resposta:", validationContract.errors())
             res.status(400).send({
                 message: 'Existem dados inválidos na sua requisição.',
                 validation: validationContract.errors()
@@ -38,10 +39,10 @@ exports.put = async (repository, validationContract, req, res) => {
         
         let resultado = await repository.update(data.id, data);
         if(resultado){
-            console.log("PUT - /user - Retorno:", resultado)
+            console.log("PUT OK - Resposta:", resultado)
             res.status(200).send(resultado);
         }else{
-            console.log("PUT - /user - Retorno:", "ERRO - Usuário inexistente")
+            console.log("PUT ERRO - Resposta:", "Usuário inexistente")
             res.status(400).send(resultado);
         }
 
@@ -54,44 +55,48 @@ exports.put = async (repository, validationContract, req, res) => {
 };
 
 exports.get = async (repository, req, res) => {
+    console.log("GET Request: GET ALL")
     try {
         let data = await repository.getAll()
+        console.log("GET Response:", data);
         res.status(200).send(data);
     } catch (err) {
-        console.log('Get error: ', err);
+        console.log("GET Response: Problema no processamento", err)
         res.status(400).send({ message: 'Erro no processamento', error: err });
     }
 };
 
 exports.search = async (repository, req, res) => {
+    console.log("SEARCH Request:", req.query)
     try {
         let data = await repository.search(req.query)
+        console.log("GET Response:", data);
         res.status(200).send(data);
     } catch (err) {
-        console.log('Get error: ', err);
+        console.log("GET Response: Erro no processamento");
         res.status(400).send({ message: 'Erro no processamento', error: err });
     }
 };
 
 exports.getById = async (repository, req, res) => {
     try {
-        console.log("getById Recebido:", req.params)
+        console.log("GET Request:", req.params)
         let id = req.params.id
         if (id) {
             let data = await repository.getById(id)
             if (data) {
-                console.log("getById Enviado:", data)
+                console.log("GET Response:", data)
                 res.status(200).send(data);
             } else {
-                console.log("getById Erro:", 'Não há dados.')
+                console.log("GET Response:", 'Não há dados.')
                 res.status(400).send({ message: 'Não há dados.' });
             }
         } else {
-            console.log("getById Erro:", 'Usuário não encontrado.')
+            console.log("GET Response:", 'Usuário não encontrado.')
             res.status(400).send({ message: 'Usuário não encontrado.' });
         }
     } catch (err) {
-        console.log('getById Erro: ', err);
+        console.log('GET Response: ', err);
         res.status(400).send({ message: 'Erro no processamento', error: err });
     }
 };

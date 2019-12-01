@@ -6,8 +6,8 @@ const schema = mongoose.Schema;
 
 const participantModel = new schema({
     userId: {type: Number},
-    eventId : {type: Number},
-    subscriptionDate: {type: Date }
+    eventoId : {type: Number},
+    registrationDate: {type: Date }
 }, { versionKey: false });
 
 

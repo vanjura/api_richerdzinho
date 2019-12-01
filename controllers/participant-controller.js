@@ -16,18 +16,11 @@ function participantController() {
 }
 
 participantController.prototype.post = async (req, res) => {
+    let _validationContract = new validation();
+    _validationContract.isRequired(req.body.userId, 'O campo userId é obrigatório');
+    _validationContract.isRequired(req.body.eventoId, 'O campo eventoId é obrigatório');
 
-    let user = await _repUser.getById(req.body.userId);
-    if (user) {
-        let event = await _repEvent.getById(req.body.eventoId);
-        if (event) {
-            await _rep.create(req.body, _repEvent);
-        } else {
-            res.status(400).send().end();
-        }
-    } else {
-        res.status(400).send().end();
-    }
+    await controllerBase.post(_rep, _validationContract, req, res);
 
 };
 
@@ -53,7 +46,7 @@ participantController.prototype.post = async (req, res) => {
 // };
 
 participantController.prototype.get = async (req, res) => {
-    controllerBase.get(_rep, req, res);
+    controllerBase.getById(_rep, req, res);
 };
 
 // participantController.prototype.getById = async (req, res) => {

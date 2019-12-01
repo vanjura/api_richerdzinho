@@ -18,9 +18,9 @@ class eventRepository {
         let event = await this._base._model.find({ id_event: data.eventoId })
         if (event.length > 0) {
             let userCadastrado = await this._base._model.find({ id_event: data.eventoId, participant: data.userId })
-            if(userCadastrado.length > 0){
+            if (userCadastrado.length > 0) {
                 return false;
-            }else{
+            } else {
                 return await this._base.push(event[0]._id, { participant: data.userId });
             }
         } else {
@@ -38,11 +38,8 @@ class eventRepository {
     }
 
     async create(data) {
-        let doadorCriado = await this._base.create(data);
-        var criteria = {
-            _id: doadorCriado._id
-        }
-        return await this._base._model.aggregate([{ $match: criteria }, { $project: this._projectionA }]);
+        await this._base._model.create(data);
+        return;
     }
 
     async update(id, data) {
@@ -75,24 +72,24 @@ class eventRepository {
 
         eventRet.participant = []
 
-        /*
-        for (const [idx, participant] of eventAtualizado.participant.entries()) {
-            let participantRet = await _repUser.getById(participant);
-            let participantObject = {
-                id: participantRet.id,
-                username: participantRet.username,
-                registrationDate: new Date()
-            }
-            eventRet.participant.push(participantObject);
+        let participants = await _repParticipant.getByEvent(id);
+        if(participants){
+            participants.forEach(async participant => {
+                let auxUser = {};
+                let user = await _repUser.getById(participant.userId)
+                auxUser.id = participant.id;
+                auxUser.username = user.username;
+                auxUser.registrationDate = participant.registrationDate;
+                eventRet.participant.push(auxUser);
+            });
         }
-        */
 
-         let user = await _repUser.getById(eventAtualizado.ownerId)
-         eventRet.user = {}
-         if (user) {
-             eventRet.user.id = user.id;
-             eventRet.user.sex = user.sex;
-             eventRet.user.email = user.email;
+        let user = await _repUser.getById(eventAtualizado.ownerId)
+        eventRet.user = {}
+        if (user) {
+            eventRet.user.id = user.id;
+            eventRet.user.sex = user.sex;
+            eventRet.user.email = user.email;
             eventRet.user.username = user.username;
             eventRet.user.birthdate = user.birthdate;
         } else {
@@ -130,18 +127,18 @@ class eventRepository {
 
             retAux.participant = [];
 
-            for (const [idx, participant] of element.participant.entries()) {
-                let participantRet = await _repUser.getById(participant);
-                if(participantRet){
-                    let participantObject = {
-                        id: participantRet.id,
-                        username: participantRet.username,
-                        registrationDate: new Date()
-                    }
-                    retAux.participant.push(participantObject);
-                }
+            let participants = await _repParticipant.getByEvent(element.id_event);
+            if(participants){
+                participants.forEach(async participant => {
+                    let auxUser = {};
+                    let user = await _repUser.getById(participant.userId)
+                    auxUser.id = participant.id;
+                    auxUser.username = user.username;
+                    auxUser.registrationDate = participant.registrationDate;
+                    retAux.participant.push(auxUser);
+                });
             }
-
+            
             retAux.eventType = {
                 id: element.eventTypeId,
                 name: "Evento Tipo " + element.eventTypeId
@@ -169,7 +166,7 @@ class eventRepository {
 
     async getById(id) {
         let event = await this._base._model.find({ id_event: id });
-        let eventRet = {}
+        let eventRet = {};
 
         if (event.length > 0) {
             eventRet.city = event[0].city;
@@ -186,14 +183,17 @@ class eventRepository {
 
             eventRet.participant = []
 
-            for (const [idx, participant] of event[0].participant.entries()) {
-                let participantRet = await _repUser.getById(participant);
-                let participantObject = {
-                    id: participantRet.id,
-                    username: participantRet.username,
-                    registrationDate: new Date()
-                }
-                eventRet.participant.push(participantObject);
+
+            let participants = await _repParticipant.getByEvent(event[0].id_event);
+            if(participants){
+                participants.forEach(async participant => {
+                    let auxUser = {};
+                    let user = await _repUser.getById(participant.userId)
+                    auxUser.id = participant.id;
+                    auxUser.username = user.username;
+                    auxUser.registrationDate = participant.registrationDate;
+                    eventRet.participant.push(auxUser);
+                });
             }
 
             let user = await _repUser.getById(event[0].ownerId)
@@ -209,7 +209,7 @@ class eventRepository {
                 eventRet.user.sex = 'Usuário Inexistente';
                 eventRet.user.email = 'Usuário Inexistente';
                 eventRet.user.username = 'Usuário Inexistente';
-                eventRet.user.birthdate = 'Usuário Inexistente';
+                eventRet.user.birthdate = '1700-01-01';
             }
 
             eventRet.eventType = {
@@ -254,14 +254,16 @@ class eventRepository {
 
             retAux.participant = [];
 
-            for (const [idx, participant] of element.participant.entries()) {
-                let participantRet = await _repUser.getById(participant);
-                let participantObject = {
-                    id: participantRet.id,
-                    username: participantRet.username,
-                    registrationDate: new Date()
-                }
-                retAux.participant.push(participantObject);
+            let participants = await _repParticipant.getByEvent(element.id_event);
+            if(participants){
+                participants.forEach(async participant => {
+                    let auxUser = {};
+                    let user = await _repUser.getById(participant.userId)
+                    auxUser.id = participant.id;
+                    auxUser.username = user.username;
+                    auxUser.registrationDate = participant.registrationDate;
+                    retAux.participant.push(auxUser);
+                });
             }
 
             retAux.eventType = {
