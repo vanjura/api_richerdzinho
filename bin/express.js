@@ -8,6 +8,7 @@ const userRouter = require('../routes/user-router')
 const eventRouter = require('../routes/event-router')
 const participantRouter = require('../routes/participant-router')
 const mensagemRouter = require('../routes/message-router')
+const tipoRouter = require('../routes/tipo-router')
 
 //Express 
 const app = express();
@@ -24,6 +25,7 @@ app.use('/user', userRouter);
 app.use('/event', eventRouter);
 app.use('/participant', participantRouter);
 app.use('/mensagem', mensagemRouter);
+app.use('/tipoEvento', tipoRouter);
 
 // app.use('/api/alerta', alertaRouter);
 // app.use('/api/doacao', doacaoRouter);
