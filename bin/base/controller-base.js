@@ -42,7 +42,7 @@ exports.put = async (repository, validationContract, req, res) => {
             console.log("PUT OK - Resposta:", resultado)
             res.status(200).send(resultado);
         }else{
-            console.log("PUT ERRO - Resposta:", "Usuário inexistente")
+            console.log("PUT ERRO - Resposta:", "Não existe retorno para a pesquisa")
             res.status(400).send(resultado);
         }
 

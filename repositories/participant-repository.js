@@ -25,9 +25,6 @@ class participantRepository {
     }
 
     async getById(id) {
-        console.log(id)
-
-        // var participant =  await this._base._model.findById(id, this._projection);
         let participant = await this._base._model.findOne({ participantId: id });
         let ret = {};
         ret.id = participant.participantId;
