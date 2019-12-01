@@ -13,8 +13,7 @@ class userRepository {
     }
 
     async authenticate(Email, Senha) {
-        let _hashSenha = md5(Senha);
-        return await this._base._model.findOne({ email: Email, password: _hashSenha }, this._projection);
+        return await this._base._model.findOne({ email: Email, password: Senha }, this._projection);
     }
 
     async create(data) {

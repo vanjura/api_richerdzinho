@@ -14,27 +14,25 @@ function userController() {
 }
 
 userController.prototype.post = async (req, res) => {
+    console.log("Recebido register:", req.body);
     let _validationContract = new validation();
 
     _validationContract.isRequired(req.body.email, 'O campo e-mail é obrigatório.');
     _validationContract.isEmail(req.body.email, 'O email informado é inválido.');
     _validationContract.isRequired(req.body.username, 'O campo nome é obrigatório.');
     _validationContract.isRequired(req.body.password, 'O campo senha é obrigatório.');
-    
+
     let usuarioExiste = await _rep.emailExiste(req.body.email);
-    if (usuarioExiste){
+    if (usuarioExiste) {
         _validationContract.isTrue(usuarioExiste.username != undefined, `Já existe o email ${req.body.email} cadastrado em nossa base`)
     }
 
-    if(req.body.password){
-        req.body.password = md5(req.body.password);
-    }
-    
     await controllerBase.post(_rep, _validationContract, req, res);
 
 };
 
 userController.prototype.put = async (req, res) => {
+    console.log("Recebido register:", req.body);
     let _validationContract = new validation();
 
     _validationContract.isRequired(req.body.id, 'O ID de edição é obrigatório.');
@@ -44,22 +42,19 @@ userController.prototype.put = async (req, res) => {
     _validationContract.isRequired(req.body.password, 'O campo password é obrigatório.');
 
     let usuarioExiste = await _rep.emailExiste(req.body.email);
-    if (usuarioExiste){
+    if (usuarioExiste) {
         _validationContract.isTrue(
-            usuarioExiste.username != undefined && 
-            usuarioExiste.id != req.body.id, 
+            usuarioExiste.username != undefined &&
+            usuarioExiste.id != req.body.id,
             `Já existe o email ${req.body.email} cadastrado em nossa base`)
     }
 
-    if(req.body.password){
-        req.body.password = md5(req.body.password);
-    }
-
     controllerBase.put(_rep, _validationContract, req, res);
-    
+
 };
 
 userController.prototype.get = async (req, res) => {
+
     controllerBase.get(_rep, req, res);
 };
 
@@ -68,29 +63,35 @@ userController.prototype.getById = async (req, res) => {
 };
 
 userController.prototype.delete = async (req, res) => {
+    console.log("Entrou na rota: DELETE ​/user​/{userId}" )
     controllerBase.delete(_rep, req, res);
 };
 
 userController.prototype.autenticar = async (req, res) => {
+    console.log("Recebido login:", req.body);
     let _validationContract = new validation();
 
     _validationContract.isRequired(req.body.email, 'O campo e-mail é obrigatório.');
     _validationContract.isEmail(req.body.email, 'O email deve ser válido.');
     _validationContract.isRequired(req.body.password, 'O campo password é obrigatório.');
 
-    if(!_validationContract.isValid()){
-        res.status(400).send({message: 'Falha no login.', validation: _validationContract.errors() });
+    if (!_validationContract.isValid()) {
+        console.log("Erro detectado:", _validationContract.errors())
+        res.status(400).send({ message: 'Falha no login.', validation: _validationContract.errors() });
         return
     }
 
     let usuarioEncontrado = await _rep.authenticate(req.body.email, req.body.password);
-    if(usuarioEncontrado){
+    if (usuarioEncontrado) {
+        console.log("Sucesso User:", usuarioEncontrado)
+        console.log("Sucesso Token:", jwt.sign({ user: usuarioEncontrado }, variables.Security.secretKey))
         res.status(200).send({
             user: usuarioEncontrado,
-            token: jwt.sign({ user:usuarioEncontrado }, variables.Security.secretKey)
+            token: jwt.sign({ user: usuarioEncontrado }, variables.Security.secretKey)
         })
-    }else{
-        res.status(400).send({message: 'Usuário e senha informados inválidos.' })
+    } else {
+        console.log("Erro detectado:", 'Usuário e senha informados inválidos.')
+        res.status(400).send({ message: 'Usuário e senha informados inválidos.' })
     }
 }
 
