@@ -9,12 +9,12 @@ let _ctrl = new controller();
 
 //Publico
 // router.get('/', _ctrl.get);
-router.post('/', _ctrl.post);
-router.get('/', _ctrl.get);
-router.put('/', _ctrl.put);
-router.get('/search', _ctrl.search);
-router.get('/:id', _ctrl.getById);
-router.delete('/:id', _ctrl.delete);
+router.post('/',auth, _ctrl.post);
+router.get('/',auth, _ctrl.get);
+router.put('/',auth, _ctrl.put);
+router.get('/search',auth, _ctrl.search);
+router.get('/:id',auth, _ctrl.getById);
+router.delete('/:id',auth, _ctrl.delete);
 
 // //Privado
 // router.put('/', auth, _ctrl.put);
