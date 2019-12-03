@@ -7,6 +7,6 @@ const auth = require('../middlewares/authentication')
 
 let _ctrl = new controller();
 
-router.get('/',auth, _ctrl.get);
+router.get('/', _ctrl.get);
 
 module.exports = router;

@@ -23,6 +23,7 @@ participantController.prototype.get = async (req, res) => {
             id: index
         })
     }
+    console.log(arr);
     res.status(200).send(arr);
 };
 
